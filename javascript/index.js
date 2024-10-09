@@ -24,12 +24,34 @@ function updateTime() {
     "h:mm:ss [<small>]A[</small>]"
   );
 
-  let japanElement = document.querySelector("#japan");
-  let japanDateElement = japanElement.querySelector(".date");
-  let japanTimeElement = japanElement.querySelector(".time");
-  let japanTime = moment().tz("Japan");
-  japanDateElement.innerHTML = japanTime.format("MMMM Do YYYY");
-  japanTimeElement.innerHTML = japanTime.format("h:mm:ss [<small>]A[</small>]");
+  let tokyoElement = document.querySelector("#tokyo");
+  let tokyoDateElement = tokyoElement.querySelector(".date");
+  let tokyoTimeElement = tokyoElement.querySelector(".time");
+  let tokyoTime = moment().tz("Asia/Tokyo");
+  tokyoDateElement.innerHTML = tokyoTime.format("MMMM Do YYYY");
+  tokyoTimeElement.innerHTML = tokyoTime.format("h:mm:ss [<small>]A[</small>]");
 }
+
+function updateCity(event) {
+  let cityTimeZone = event.target.value;
+  let cityName = cityTimeZone.replace("_", " ").split("/")[1];
+  let cityTime = moment().tz(cityTimeZone);
+  let citiesElement = document.querySelector("#cities");
+  citiesElement.innerHTML = `<div class="city">
+          <div>
+            <h2>${cityName}</h2>
+            <div class="date">${cityTime.format("MMMM Do YYYY")}</div>
+          </div>
+          <div>
+            <div class="time">${cityTime.format(
+              "h:mm:ss"
+            )}<small>${cityTime.format("A")}</small></div>
+          </div>
+        </div>`;
+}
+
 updateTime();
 setInterval(updateTime, 1000);
+
+let citiesSelectElement = document.querySelector("#city");
+citiesSelectElement.addEventListener("change", updateCity);
